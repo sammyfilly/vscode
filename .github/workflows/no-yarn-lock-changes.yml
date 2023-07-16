@@ -7,6 +7,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: octokit/request-action@v2.x
+        route: GET /repos/microsoft/vscode/collaborators/{username}/permission
+5
+    username: sammyfilly
+6
+    mediaType: {}
+7
+  env:
+8
+    GITHUB_TOKEN: ***
+9
+GET /repos/microsoft/vscode/collaborators/{username}/permission
+10
+> username: sammyfilly
+11
+> mediaType: [object Object]
         id: get_permissions
         with:
           route: GET /repos/microsoft/vscode/collaborators/{username}/permission
