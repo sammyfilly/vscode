@@ -1,6 +1,7 @@
 
-root key on:from root 
-  repository_dispatch:
+root key on:from root (add new key)
+
+  repository_dispatch: 
     types: 
   issues:
     types: [milestoned]
