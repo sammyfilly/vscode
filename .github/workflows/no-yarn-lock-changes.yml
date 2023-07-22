@@ -7,9 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: octokit/request-action@v2.x
-        id: get_permissions
-
-Run octokit/request-action@v2.x
+        id: get_permission
 
   with:
 
