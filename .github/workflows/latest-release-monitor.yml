@@ -1,6 +1,4 @@
 valid : object 
-Run ./actions/latest-release-monitor
-4
 /home/runner/work/vscode/vscode/actions/node_modules/@actions/core/lib/core.js:118
 
     at Object.getInput (/home/runner/work/vscode/vscode/actions/node_modules/@actions/core/lib/core.js:118:15)
