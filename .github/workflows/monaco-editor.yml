@@ -14,7 +14,6 @@ on:
     PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
     ELECTRON_SKIP_BINARY_DOWNLOAD: 1
 
-yarn install v1.22.19
 
 $ node build/npm/preinstall.js
 
