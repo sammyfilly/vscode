@@ -206,14 +206,17 @@ export class EditSessionsContribution extends Disposable implements IWorkbenchCo
 		} else if (shouldAutoResumeOnReload) {
 			// The application has previously launched via a protocol URL Continue On flow
 			const hasApplicationLaunchedFromContinueOnFlow = this.storageService.getBoolean(EditSessionsContribution.APPLICATION_LAUNCHED_VIA_CONTINUE_ON_STORAGE_KEY, StorageScope.APPLICATION, false);
+			this.logService.info(`Prompting to enable cloud changes, has application previously launched from Continue On flow: ${hasApplicationLaunchedFromContinueOnFlow}`);
 
 			const handlePendingEditSessions = () => {
 				// display a badge in the accounts menu but do not prompt the user to sign in again
+				this.logService.info('Showing badge to enable cloud changes in accounts menu...');
 				this.updateAccountsMenuBadge();
 				this.pendingEditSessionsContext.set(true);
 				// attempt a resume if we are in a pending state and the user just signed in
 				const disposable = this.editSessionsStorageService.onDidSignIn(async () => {
 					disposable.dispose();
+					this.logService.info('Showing badge to enable cloud changes in accounts menu succeeded, resuming cloud changes...');
 					await this.progressService.withProgress(resumeProgressOptions, async (progress) => await this.resumeEditSession(undefined, true, undefined, undefined, progress));
 					this.storageService.remove(EditSessionsContribution.APPLICATION_LAUNCHED_VIA_CONTINUE_ON_STORAGE_KEY, StorageScope.APPLICATION);
 					this.environmentService.continueOn = undefined;
@@ -227,8 +230,10 @@ export class EditSessionsContribution extends Disposable implements IWorkbenchCo
 			) {
 				// store the fact that we prompted the user
 				this.storageService.store(EditSessionsContribution.APPLICATION_LAUNCHED_VIA_CONTINUE_ON_STORAGE_KEY, true, StorageScope.APPLICATION, StorageTarget.MACHINE);
-				await this.editSessionsStorageService.initialize();
+				this.logService.info('Prompting to enable cloud changes...');
+				await this.editSessionsStorageService.initialize('read');
 				if (this.editSessionsStorageService.isSignedIn) {
+					this.logService.info('Prompting to enable cloud changes succeeded, resuming cloud changes...');
 					await this.progressService.withProgress(resumeProgressOptions, async (progress) => await this.resumeEditSession(undefined, true, undefined, undefined, progress));
 				} else {
 					handlePendingEditSessions();
@@ -239,6 +244,8 @@ export class EditSessionsContribution extends Disposable implements IWorkbenchCo
 			) {
 				handlePendingEditSessions();
 			}
+		} else {
+			this.logService.debug('Auto resuming cloud changes disabled.');
 		}
 	}
 
@@ -491,7 +498,7 @@ export class EditSessionsContribution extends Disposable implements IWorkbenchCo
 
 		this.logService.info(ref !== undefined ? `Resuming changes from cloud with ref ${ref}...` : 'Checking for pending cloud changes...');
 
-		if (silent && !(await this.editSessionsStorageService.initialize(true))) {
+		if (silent && !(await this.editSessionsStorageService.initialize('read', true))) {
 			return;
 		}
 
@@ -707,14 +714,15 @@ export class EditSessionsContribution extends Disposable implements IWorkbenchCo
 
 				hasEdits = true;
 
-				const contents = encodeBase64((await this.fileService.readFile(uri)).value);
-				editSessionSize += contents.length;
-				if (editSessionSize > this.editSessionsStorageService.SIZE_LIMIT) {
-					this.notificationService.error(localize('payload too large', 'Your working changes exceed the size limit and cannot be stored.'));
-					return undefined;
-				}
 
 				if (await this.fileService.exists(uri)) {
+					const contents = encodeBase64((await this.fileService.readFile(uri)).value);
+					editSessionSize += contents.length;
+					if (editSessionSize > this.editSessionsStorageService.SIZE_LIMIT) {
+						this.notificationService.error(localize('payload too large', 'Your working changes exceed the size limit and cannot be stored.'));
+						return undefined;
+					}
+
 					workingChanges.push({ type: ChangeType.Addition, fileType: FileType.File, contents: contents, relativeFilePath: relativeFilePath });
 				} else {
 					// Assume it's a deletion
@@ -742,7 +750,7 @@ export class EditSessionsContribution extends Disposable implements IWorkbenchCo
 			return undefined;
 		}
 
-		const data: EditSession = { folders, version: 2 };
+		const data: EditSession = { folders, version: 2, workspaceStateId: this.editSessionsStorageService.lastWrittenResources.get('workspaceState')?.ref };
 
 		try {
 			this.logService.info(`Storing edit session...`);
@@ -837,7 +845,7 @@ export class EditSessionsContribution extends Disposable implements IWorkbenchCo
 				return continueWithCloudChanges;
 			}
 
-			const initialized = await this.editSessionsStorageService.initialize();
+			const initialized = await this.editSessionsStorageService.initialize('write');
 			if (!initialized) {
 				this.telemetryService.publicLog2<EditSessionsAuthCheckEvent, EditSessionsAuthCheckClassification>('continueOn.editSessions.canStore.outcome', { outcome: 'didNotEnableEditSessionsWhenPrompted' });
 			}
