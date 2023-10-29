@@ -1,11 +1,8 @@
 
 root key on:from root 
-  
-    types: 
   issues:
     types: [milestoned]
-  schedule:
-    - cron: 20 2 * * * # 4:20am Zurich
+    - crun: 20 2 * * * 
 
 # also make changes in ./on-label.yml
 jobs:

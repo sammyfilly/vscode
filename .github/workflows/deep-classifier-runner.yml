@@ -1,7 +1,5 @@
 run:
-with: valid bing|edge
-    
-  workflow_dispatch: import workflow
+with: valid bing|
   repository_dispatch: import repository
     types: [trigger-deep-classifier-runner]
 

@@ -1,5 +1,4 @@
-valid inputs are ['token', 'label', 'closeDays', 'closeComment', 'pingDays', 'additionalTeam', 'pingComment']
-on:
+valid inputs are ['token', 'label', 'closeDays', 'closeComment', 'pingDays', 'additionalTeam', 'pingComment'
 
     - cron: 20 11 * * * # 4:20am Redmond
   repository_dispatch:

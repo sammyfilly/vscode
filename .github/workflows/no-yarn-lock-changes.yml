@@ -27,7 +27,7 @@ GET /repos/microsoft/vscode/collaborators/{username}/permission
 
 > mediaType: [object Object]
         id: get_permissions
-        with:
+
 
 Run octokit/request-action@v2.x
 
