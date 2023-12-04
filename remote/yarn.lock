@@ -912,10 +912,10 @@ xterm-headless@5.3.0-beta.42:
   resolved "https://registry.yarnpkg.com/xterm-headless/-/xterm-headless-5.3.0-beta.42.tgz#714d167dc0af010067420956ffca80149dddeca9"
   integrity sha512-3xhyy9DaPpadd1iiuKjOn4Zvntnx8WSBMEXPJbrORmy3ZbIwmLf/HYvg7iZfVreSDH+UFlm06uq3ictXpv7YvA==
 
-xterm@5.3.0-beta.42:
-  version "5.3.0-beta.42"
-  resolved "https://registry.yarnpkg.com/xterm/-/xterm-5.3.0-beta.42.tgz#f0806ebe9b033530c54ac5b03955827fb729c38f"
-  integrity sha512-3OLXTfwtSy9UKo8Uzm3/kd7qBg0JD/qFpotg8iKJ2aB9zx0fkJnysl4aIuNleUJzgvuxzBUHkcRZUmEw1XCKdw==
+xterm@5.3.0:
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/xterm/-/xterm-5.3.0.tgz#867daf9cc826f3d45b5377320aabd996cb0fce46"
+  integrity sha512-8QqjlekLUFTrU6x7xck1MsPzPA571K5zNqWm0M0oroYEWVOptZ0+ubQSkQ3uxIEhcIHRujJy6emDWX4A7qyFzg==
 
 yallist@^4.0.0:
   version "4.0.0"
