@@ -33,14 +33,14 @@
     "Programming Languages"
   ],
   "dependencies": {
-    "@vscode/extension-telemetry": "0.7.5",
-    "jsonc-parser": "^3.2.0",
-    "semver": "7.5.2",
-    "vscode-tas-client": "^0.1.63",
-    "@vscode/sync-api-client": "^0.7.2",
-    "@vscode/sync-api-common": "^0.7.2",
-    "@vscode/sync-api-service": "^0.7.3",
-    "vscode-uri": "^3.0.3"
+    "@vscode/extension-telemetry": "0.9.7",
+    "jsonc-parser": "^3.3.1",
+    "semver": "7.6.3",
+    "vscode-tas-client": "^0.1.84",
+    "@vscode/sync-api-client": "^0.8.1",
+    "@vscode/sync-api-common": "^0.8.1",
+    "@vscode/sync-api-service": "^0.8.1",
+    "vscode-uri": "^3.0.8"
   },
   "devDependencies": {
     "@types/node": "18.x",
